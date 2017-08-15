@@ -19,6 +19,25 @@ const curry = (fn) => {
   return _f(_f)([])
 }
 
+
+const antiCurrying = (fn) => {
+  return (...args) => {
+    var len = args.length;
+    const _f = (self) => {
+      return (r) => {
+        return (n) => {
+          if (n === len - 1) {
+            return r(args[n])
+          }
+          return self(self)(r(args[n]))(n+1)
+        }
+      }
+    }
+    return _f(_f)(fn)(0)
+  }
+}
+
+
 const compose = (...fns) => {
   const len = fns.length
   for (var i = 0; i < len; i++) {
